@@ -1,23 +1,32 @@
 const express = require('express');
 const app = express();
+const handlebars = require('express-handlebars');
+
+const Sequelize = require("sequelize")
 
 
-app.get('/', (req, res) => {
-    // res.send('Hello World!');
-    res.sendFile(__dirname + '/html/index.html');
-});
+// Config
+// template engine 
+const hbs = handlebars.create({
+    defaultLayout: "main"
+})
+app.engine('handlebars', () => hbs)
+app.set('view engine', 'handlebars');
 
-app.get("/sobre", (req, res) => {
-    res.send("Sobre");
+//conexion DB
+
+const sequelize = new Sequelize('teste', 'root', '92318491', {
+    host: '172.17.0.2',
+    dialect: 'mysql'
 })
 
-app.get('/blog', () => {
-    res.send('BemVindo ao meu Blog');
+
+app.get('/cad', function (req, res) {
+    res.render('formularios')
 })
 
-app.get("/ola/:cargo/:nome/:cor", () => {
-    res.send("<h1>Ola " + req.params.nome + "</h1>" + "<h2> Seu Cargo é:" + req.params.cargo + "</h2>" + "<h3> Sua cor preferida é:" + req.params.cor + "</h3>");
-})
+
+
 
 
 app.listen(8081, () => {
